@@ -4,7 +4,9 @@ import { exampleImage } from './image';
 @Component({
   selector: 'app-root',
   template: `
-    <rabbi-cutter [imageSrc]="imageSrc"></rabbi-cutter>
+    <div style="width: 600px; height: 400px">
+      <rabbi-cutter [imageSrc]="imageSrc"></rabbi-cutter>
+    </div>
   `,
   styles: []
 })

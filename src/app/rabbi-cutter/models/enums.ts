@@ -1,16 +1,16 @@
 export enum SizeRuleEnum {
-    contain,
-    stretchByWidth,
-    stretchByHeight,
-    realsize
+    contain = 'contain',
+    stretchByWidth = 'stretchByWidth',
+    stretchByHeight = 'stretchByHeight',
+    realsize = 'rectangle'
 }
 
 export enum ShapeEnum {
-    rectangle,
-    circle
+    rectangle = 'rectangle',
+    circle = 'circle'
 }
 
 export enum cropActionEnum {
-    resize,
-    drag
+    resize = 'resize',
+    drag = 'drag'
 }

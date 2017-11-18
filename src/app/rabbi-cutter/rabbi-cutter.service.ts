@@ -6,6 +6,7 @@ import { SizeModel } from './models/size.model';
 import { RabbiCutterModel } from './models/rabbi-cutter.model';
 import { ElementRef } from '@angular/core';
 import { LastEventModel } from './models/last-event.model';
+import { RectangleModel } from './models/rectangle.model';
 
 export class RabbiCutterService {
     options: RabbiCutterOptionsModel;
@@ -28,7 +29,7 @@ export class RabbiCutterService {
         this.options = this.mergeOptions(this.options);
 
         this.canvas = canvas;
-        this.canvasParent = this.canvas.parentElement;
+        this.canvasParent = this.canvas.parentElement.parentElement;
         this.context = canvas['getContext']('2d');
         this.updateResizeRect();
         this.updateStyles();
@@ -58,7 +59,7 @@ export class RabbiCutterService {
         this.updateStyles();
         this.updateScale();
         this.updateResizeRect();
-        this.fillPreview();
+        // this.fillPreview();
         if (this.isLoading) {
             this.validateCropWindowParameters();
         }
@@ -76,9 +77,9 @@ export class RabbiCutterService {
         return new Promise(function (resolve, reject) {
             this.img.onload = () => {
                 this.render();
-                this.canvas.addEventListener('mousedown', this._onmousedown.bind(this));
-                this.canvas.addEventListener('touchstart', this._onmousedown.bind(this));
-                window.addEventListener('resize', this._onresize.bind(this));
+                this.canvas.addEventListener('mousedown', this.onMouseDown.bind(this));
+                this.canvas.addEventListener('touchstart', this.onMouseDown.bind(this));
+                window.addEventListener('resize', this.onResize.bind(this));
 
                 resolve('Image has been successfully loaded');
             };
@@ -176,6 +177,7 @@ export class RabbiCutterService {
         this.lastEvent.pos = pos;
         this.lastEvent.cropAction = cropAction;
 
+        console.log(cropAction);
         if (cropAction) {
             window.addEventListener('mousemove', this.eventMouseMove);
             window.addEventListener('mouseup', this.eventMouseUp);
@@ -290,14 +292,14 @@ export class RabbiCutterService {
     }
 
     private validateCropWindowParameters() {
-        const canvasRect = {
+        const canvasRect: RectangleModel = {
             pos: {
                 x: 0 - 10,
                 y: 0 - 10
             },
             size: {
-                x: this.canvas['width'] + 10,
-                y: this.canvas['height'] + 10
+                width: this.canvas['width'] + 10,
+                height: this.canvas['height'] + 10
             }
         };
         if (!this.inBounds({
@@ -310,12 +312,12 @@ export class RabbiCutterService {
             }, canvasRect)) {
             this.options.cropWindow = Object.assign({}, this.options.cropWindow, {
                 pos: {
-                    x: canvasRect.size.x / 4,
-                    y: canvasRect.size.y / 4
+                    x: canvasRect.size.width / 4,
+                    y: canvasRect.size.height / 4
                 },
                 size: {
-                    x: canvasRect.size.x / 2,
-                    y: canvasRect.size.y / 2
+                    width: canvasRect.size.width / 2,
+                    height: canvasRect.size.height / 2
                 },
             });
             this.crop = JSON.parse(JSON.stringify(this.options.cropWindow));
@@ -419,10 +421,10 @@ export class RabbiCutterService {
     }
 
     private inDragBounds(x, y) {
-        let pos;
-        const size = {
-            x: this.options.resizeRect * this.options.canvasScale,
-            y: this.options.resizeRect * this.options.canvasScale
+        let pos: PositionModel;
+        const size: SizeModel = {
+            width: this.options.resizeRect * this.options.canvasScale,
+            height: this.options.resizeRect * this.options.canvasScale
         };
 
         switch (this.crop.shape) {
@@ -445,7 +447,7 @@ export class RabbiCutterService {
 
         return this.inBounds(
             { x, y },
-            { pos, size }
+            RectangleModel.fromJSON({ pos, size })
         );
     }
 
@@ -457,10 +459,10 @@ export class RabbiCutterService {
     }
 
 
-    private inBounds(point, rect) {
+    private inBounds(point: PositionModel, rect: RectangleModel) {
         return point.x >= rect.pos.x &&
-            point.x <= rect.pos.x + rect.size.x &&
+            point.x <= rect.pos.x + rect.size.width &&
             point.y >= rect.pos.y &&
-            point.y <= rect.pos.y + rect.size.y;
+            point.y <= rect.pos.y + rect.size.height;
     }
 }

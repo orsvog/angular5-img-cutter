@@ -1,0 +1,70 @@
+<h1>Welcome to Rabbi Cutter (angular 5)</h1>
+<div class="p-l-40 m-b-20">
+    <input type="file" id="js-fileinput" name="imageLoader" accept="image/jpeg,image/png,image/gif" class="hide" />
+    <label for="js-fileinput" class="btn btn-danger btn-lg noselect">Choose a file...</label>
+    <div id="js-message" style="width: 320px" class="alert"></div>
+</div>
+<div (click)="toggleMenu('block')" class="btn btn-primary menu-btn m-l-20 m-b-20">Open Menu</div>
+<div class="row">
+    <div class="col-md-3 col-xs-12 menu" [ngClass]="{'show': showMenu}">
+        <div (click)="toggleMenu('')" class="menu-close btn btn-link">close</div>
+        <h3 class="m-t-10 p-b-0"> Crop shape:</h3>
+        <div class="m-l-10">
+            <div (click)="updateShape('circle')" class="btn btn-success btn-sm m-l-10 m-t-10">circle</div>
+            <div (click)="updateShape('rectangle')" class="btn btn-success btn-sm m-l-10 m-t-10">rectangle</div>
+        </div>
+        <h3 class="m-t-10 p-b-0"> Crop size:</h3>
+        <div class="row">
+            <div class="col-xs-2">
+                <label for="js-crop-x" class="m-l-10 m-t-10">Width:</label>
+            </div>
+            <div class="col-xs-5">
+                <input #cropX id="js-crop-x" type="number" value="100" step="50" min="50" class="m-t-10 form-control" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-2">
+                <label for="js-crop-y" class="m-l-10 m-t-10">Height:</label>
+            </div>
+            <div class="col-xs-5">
+                <input #cropY id="js-crop-y" type="number" value="100" step="50" min="50" class="m-t-10 form-control" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-10 col-xs-push-2">
+                <div (click)="updateCropSize(cropX.value, cropY.value)" class="btn btn-success btn-sm m-t-10">change</div>
+                <div (click)="getCropSize()" class="btn btn-info btn-sm m-t-10 m-l-10">get current</div>
+            </div>
+        </div>
+        <h3 class="m-t-10 p-b-0">Crop resize:</h3>
+        <!-- <div class="row">
+            <div class="col-xs-11 col-xs-push-1 checkbox">
+                <label>
+                    <input id="js-allow-resize" type="checkbox" checked="checked" disabled="disabled" />
+                    <Option>Allow crop window resize by user</Option>
+                </label>
+            </div>
+        </div> -->
+        <h3 class="m-t-10 p-b-0"> Other:</h3>
+        <div class="m-l-10">
+            <div (click)="downloadImage()" class="btn btn-success btn-sm m-l-10 m-t-10">cut it!</div>
+        </div>
+        <h3 class="m-t-10 p-b-0">Working field style:</h3>
+        <div class="m-l-10">
+            <div (click)="updateStyles('contain')" class="btn btn-success btn-sm m-l-10 m-t-10">contain</div>
+            <div (click)="updateStyles('stretchByWidth')" class="btn btn-success btn-sm m-l-10 m-t-10">stretchByWidth</div>
+            <div (click)="updateStyles('stretchByHeight')" class="btn btn-success btn-sm m-l-10 m-t-10">stretchByHeight</div>
+            <div (click)="updateStyles('realsize')" class="btn btn-success btn-sm m-l-10 m-t-10">realsize</div>
+        </div>
+        <div class="m-t-20 m-l-10 m-r-10 m-b-20">
+            <div>
+                <canvas id="js-previewcanvas" (click)="downloadImage()" style="display: block; cursor: pointer; max-width: 100%; min-width: auto; max-height: 300px; margin: auto"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9 col-xs-12" style="border: 1px solid black">
+        <div *ngIf="showRabbiCutter" style="width: 600px; height: 600p; margin: 10px">
+            <rabbi-cutter [imageSrc]="imageSrc" [options]="options"></rabbi-cutter>
+        </div>
+    </div>
+</div>

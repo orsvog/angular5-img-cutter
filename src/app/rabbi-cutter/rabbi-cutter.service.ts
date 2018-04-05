@@ -9,7 +9,7 @@ import { LastEventModel } from './models/last-event.model';
 import { RectangleModel } from './models/rectangle.model';
 
 export class RabbiCutterService {
-    options: RabbiCutterOptionsModel;
+    private options: RabbiCutterOptionsModel;
     private context: CanvasRenderingContext2D;
     private canvas: Element;
     private canvasParent: Element;
@@ -26,7 +26,7 @@ export class RabbiCutterService {
     constructor() { }
 
     init(canvas: Element, options: RabbiCutterOptionsModel) {
-        this.options = this.mergeOptions(this.options);
+        this.options = this.mergeOptions(options);
 
         this.canvas = canvas;
         this.canvasParent = this.canvas.parentElement.parentElement;

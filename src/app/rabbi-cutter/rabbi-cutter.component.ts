@@ -15,14 +15,14 @@ export class RabbiCutterComponent implements OnInit {
   @ViewChild('canvas') canvasRef: ElementRef;
 
   constructor(
-    private rcService: RabbiCutterService
+    private rabbiCutterService: RabbiCutterService
   ) { }
 
   ngOnInit() {
     if (!this.imageSrc) {
       return;
     }
-    this.rcService.init(this.canvasRef.nativeElement, this.options);
+    this.rabbiCutterService.init(this.canvasRef.nativeElement, this.options);
     this.loadImage(this.imageSrc);
   }
 
@@ -30,12 +30,12 @@ export class RabbiCutterComponent implements OnInit {
     if (!this.imageSrc) {
       return;
     }
-    this.rcService.init(this.canvasRef.nativeElement, this.options);
+    this.rabbiCutterService.init(this.canvasRef.nativeElement, this.options);
     this.loadImage(this.imageSrc);
   }
 
   private loadImage(src) {
-    this.rcService.loadImage(src)
+    this.rabbiCutterService.loadImage(src)
       .then(msg => {
         console.log('image loaded');
       })

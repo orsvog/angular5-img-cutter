@@ -16,6 +16,8 @@ export class AppComponent {
 
   showMenu = false;
   showRabbiCutter = true;
+  SHAPE = ShapeEnum;
+  SIZE_RULE = SizeRuleEnum;
 
   constructor() {
     this.options = RabbiCutterOptionsModel.fromJSON({
